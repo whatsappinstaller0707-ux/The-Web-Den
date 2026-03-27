@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Web-Den | Full Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { transition: background-color 0.5s ease; }
+    </style>
+</head>
+<body id="main-body" class="bg-[#051109] text-slate-100 font-sans">
+
+    <nav id="nav-bar" class="p-6 flex justify-between items-center border-b border-emerald-900/30 bg-[#051109]/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="text-lg font-bold tracking-tight text-white">The Web<span class="text-emerald-500">-Den</span></div>
+        <div class="flex gap-5 items-center text-xs font-medium text-slate-400">
+            <a href="legal.html" class="text-slate-300 hover:text-emerald-400 transition-colors">Legal & Contact</a>
+            <button id="secret-trigger" onclick="showSecretLinks()" class="text-red-500 hover:text-red-400 transition-colors font-black uppercase tracking-widest">🤫</button>
+            <button id="public-trigger" onclick="location.reload()" class="hidden text-white hover:underline transition-colors uppercase font-bold tracking-widest">Exit Vault</button>
+        </div>
+    </nav>
+
+    <main class="px-6 py-16 flex flex-col items-center text-center">
+        <h1 id="hero-title" class="text-4xl md:text-6xl font-bold mb-4 text-white tracking-tight">Curated Intelligence.</h1>
+        <p id="hero-desc" class="text-slate-400 max-w-sm mb-8 text-sm leading-relaxed">The complete professional directory of essential web resources.</p>
+        <button id="explore-btn" onclick="document.getElementById('search-input').focus()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-emerald-500/20">Start Exploring</button>
+    </main>
+
+    <section id="filter-section" class="px-6 py-4 flex flex-col gap-4 sticky top-[73px] bg-[#051109] z-40 border-b border-emerald-900/20 pb-6">
+        <input type="text" id="search-input" placeholder="Search across 50+ resources..." class="w-full bg-emerald-950/20 border border-emerald-900/30 rounded-xl py-3 px-5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-all">
+        <div class="flex overflow-x-auto gap-2 no-scrollbar" id="category-filters">
+            <button onclick="filterLinks('All')" class="category-btn bg-emerald-700 whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-bold text-white">All</button>
+            <button onclick="filterLinks('For Designers')" class="category-btn bg-emerald-900/40 whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-bold text-slate-300 border border-emerald-800/30 hover:bg-emerald-800">For Designers</button>
+            <button onclick="filterLinks('AI Tools')" class="category-btn bg-emerald-900/40 whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-bold text-slate-300 border border-emerald-800/30 hover:bg-emerald-800">AI Tools</button>
+            <button onclick="filterLinks('Movies')" class="category-btn bg-emerald-900/40 whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-bold text-slate-300 border border-emerald-800/30 hover:bg-emerald-800">Movies</button>
+            <button onclick="filterLinks('Science')" class="category-btn bg-emerald-900/40 whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-bold text-slate-300 border border-emerald-800/30 hover:bg-emerald-800">Science</button>
+            <button onclick="filterLinks('History')" class="category-btn bg-emerald-900/40 whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-bold text-slate-300 border border-emerald-800/30 hover:bg-emerald-800">History</button>
+        </div>
+    </section>
+
+    <section id="link-grid" class="px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
+
+    <div class="flex justify-center items-center gap-4 pb-12">
+        <button id="prev-btn" onclick="changePage(-1)" class="bg-emerald-950/40 border border-emerald-900/30 px-5 py-2 rounded-xl text-xs font-bold text-slate-400 disabled:opacity-30">Previous</button>
+        <span id="page-number" class="text-xs font-bold text-emerald-500 font-mono">Page 1</span>
+        <button id="next-btn" onclick="changePage(1)" class="bg-emerald-950/40 border border-emerald-900/30 px-5 py-2 rounded-xl text-xs font-bold text-slate-400 disabled:opacity-30">Next</button>
+    </div>
+
+    <footer id="footer" class="px-6 py-12 border-t border-emerald-900/30 bg-[#020a05] text-center">
+        <div class="text-lg font-bold text-white mb-2">The Web<span class="text-emerald-500">-Den</span></div>
+        <p class="text-slate-500 text-[10px] uppercase tracking-widest mb-6">Discovery & Intelligence</p>
+        <div class="flex justify-center gap-6 mb-8">
+            <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm">Twitter</a>
+            <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm">GitHub</a>
+            <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm">Discord</a>
+        </div>
+        <div class="flex justify-center gap-6 mb-8">
+            <a href="legal.html" class="text-slate-500 hover:text-emerald-500 transition-colors text-[10px] uppercase font-bold tracking-tighter">Legal Notice</a>
+            <a href="legal.html" class="text-slate-500 hover:text-emerald-500 transition-colors text-[10px] uppercase font-bold tracking-tighter">Contact Curators</a>
+        </div>
+        <p class="text-slate-600 text-[10px]">© 2026 The Web-Den Project. Built on Mobile.</p>
+    </footer>
+
+    <script>
+        const webDenLinks = [
+            // --- FOR DESIGNERS (FROM IMAGES) ---
+            { name: "FontSquirrel", category: "For Designers", desc: "Hand-picked high-quality free fonts.", url: "https://www.fontsquirrel.com" },
+            { name: "Dafont", category: "For Designers", desc: "Massive archive of downloadable fonts.", url: "https://www.dafont.com" },
+            { name: "FontSpace", category: "For Designers", desc: "100,000+ designer shared fonts.", url: "https://www.fontspace.com" },
+            { name: "Behance", category: "For Designers", desc: "World's largest creative network.", url: "https://www.behance.com" },
+            { name: "Dribbble", category: "For Designers", desc: "Discover and connect with designers.", url: "https://www.dribbble.com" },
+            { name: "Freepik", category: "For Designers", desc: "Photos, vectors, and PSD files.", url: "https://www.freepik.com" },
+            { name: "Unsplash", category: "For Designers", desc: "Freely usable high-res images.", url: "https://www.unsplash.com" },
+            { name: "Pexels", category: "For Designers", desc: "Free stock photos & videos.", url: "https://www.pexels.com" },
+            { name: "Photopea", category: "For Designers", desc: "Web-based Photoshop alternative.", url: "https://www.photopea.com" },
+            { name: "Placeit", category: "For Designers", desc: "Largest mockup collection.", url: "https://www.placeit.net" },
+            { name: "SmartMockups", category: "For Designers", desc: "Browser-based product mockups.", url: "https://smartmockups.com" },
+            { name: "Awwwards", category: "For Designers", desc: "Best of web design & development.", url: "https://www.awwwards.com" },
+
+            // --- PUBLIC DATABASE (32 LINKS) ---
+            { name: "Perplexity", category: "AI Tools", desc: "AI search engine with citations.", url: "https://perplexity.ai" },
+            { name: "Claude", category: "AI Tools", desc: "Conversational AI building focus.", url: "https://claude.ai" },
+            { name: "Gamma", category: "AI Tools", desc: "Presentations from text prompts.", url: "https://gamma.app" },
+            { name: "LookMovie", category: "Movies", desc: "Clean movie/TV streaming.", url: "https://lookmovie2.to" },
+            { name: "YTS", category: "Movies", desc: "High-quality small movie downloads.", url: "https://yts.mx" },
+            { name: "AlternativeTo", category: "Software", desc: "Free alternatives to paid software.", url: "https://alternativeto.net" },
+            { name: "TinyWow", category: "Software", desc: "PDF, Video, and Image tools.", url: "https://tinywow.com" },
+            { name: "Remove.bg", category: "Software", desc: "Remove image backgrounds instantly.", url: "https://remove.bg" },
+            { name: "Itch.io", category: "Gaming", desc: "Indie games for free.", url: "https://itch.io" },
+            { name: "FitGirl Repacks", category: "Gaming", desc: "Compressed PC game installers.", url: "https://fitgirl-repacks.site" },
+            { name: "Livescore", category: "Sports", desc: "Real-time scores and stats.", url: "https://livescore.com" },
+            { name: "BuffStreams", category: "Sports", desc: "Major league live streams.", url: "https://buffstreams.sx" },
+            { name: "Nextstrain", category: "Science", desc: "Real-time pathogen evolution.", url: "https://nextstrain.org" },
+            { name: "Gapminder", category: "Data", desc: "Global assumptions vs real data.", url: "https://gapminder.org" },
+            { name: "Numbeo", category: "Data", desc: "Global cost of living tracker.", url: "https://numbeo.com" },
+            { name: "Retraction Watch", category: "Science", desc: "Exposing fraudulent research.", url: "https://retractionwatch.com" },
+            { name: "Paperswithcode", category: "AI Tools", desc: "AI breakthroughs with code.", url: "https://paperswithcode.com" },
+            { name: "Pubpeer", category: "Science", desc: "Public peer review system.", url: "https://pubpeer.com" },
+            { name: "Erowid", category: "Science", desc: "Psychoactive substance documents.", url: "https://erowid.org" },
+            { name: "Psychonautwiki", category: "Science", desc: "Altered state encyclopedia.", url: "https://psychonautwiki.org" },
+            { name: "Clinicaltrials", category: "Science", desc: "Searchable medical trial database.", url: "https://clinicaltrials.gov" },
+            { name: "Biodiversitylibrary", category: "Education", desc: "Digitized natural history books.", url: "https://biodiversitylibrary.org" },
+            { name: "Onezoom", category: "Education", desc: "Map of all 2 million species.", url: "https://onezoom.org" },
+            { name: "Rumsey", category: "History", desc: "150,000 rare antique maps.", url: "https://davidrumsey.com" },
+            { name: "Oldmapsonline", category: "History", desc: "Historical map search engine.", url: "https://oldmapsonline.org" },
+            { name: "Archivegrid", category: "History", desc: "5 million archival collections.", url: "https://beta.worldcat.org/archivegrid" },
+            { name: "Worldcat", category: "Education", desc: "Every book in every library.", url: "https://worldcat.org" },
+            { name: "Fossilworks", category: "Science", desc: "Fossil occurrence mapping.", url: "https://fossilworks.org" },
+            { name: "Imslp", category: "Education", desc: "Public domain classical scores.", url: "https://imslp.org" },
+            { name: "Ethnologue", category: "Education", desc: "Every living and dead language.", url: "https://ethnologue.com" },
+            { name: "Gnod", category: "Discovery", desc: "Literature and Art mapping.", url: "https://gnod.com" },
+            { name: "Reliefweb", category: "News", desc: "Humanitarian crisis tracker.", url: "https://reliefweb.int" }
+        ];
+
+        const secretLinks = ["ankergames.net", "videos.cc/home", "streemfree.com", "keygenninja.com", "create.xyz", "oxaam.com", "bananaprompts.xyz", "withdiode.com", "freetoolr.com"].map(url => ({ name: url.split('.')[0].toUpperCase(), category: "SECRET", desc: "Vault Entry: Restricted Node.", url: url.startsWith('http') ? url : `https://${url}` }));
+
+        let currentPage = 1;
+        const itemsPerPage = 9;
+        let currentFilteredLinks = [...webDenLinks];
+        let isSecretMode = false;
+
+        function displayLinks() {
+            const grid = document.getElementById('link-grid');
+            grid.innerHTML = "";
+            const start = (currentPage - 1) * itemsPerPage;
+            const paginatedItems = currentFilteredLinks.slice(start, start + itemsPerPage);
+
+            paginatedItems.forEach(link => {
+                grid.innerHTML += `
+                    <div class="${isSecretMode ? 'bg-black border-red-900/40' : 'bg-emerald-950/20 border-emerald-900/20'} border p-6 rounded-2xl flex flex-col justify-between hover:scale-[1.02] transition-all shadow-xl">
+                        <div>
+                            <span class="text-[10px] font-bold ${isSecretMode ? 'text-red-500' : 'text-emerald-500'} uppercase tracking-widest">${link.category}</span>
+                            <h3 class="text-lg font-semibold mt-1 text-white">${link.name}</h3>
+                            <p class="text-slate-400 text-xs mt-2 leading-relaxed">${link.desc}</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t ${isSecretMode ? 'border-red-900/20' : 'border-emerald-900/10'}">
+                            <a href="${link.url}" target="_blank" class="text-xs font-bold ${isSecretMode ? 'text-red-500' : 'text-emerald-500'} hover:brightness-125 transition-all">Open Resource →</a>
+                        </div>
+                    </div>`;
+            });
+            updatePaginationUI();
+        }
+
+        function showSecretLinks() {
+            isSecretMode = true;
+            document.getElementById('main-body').style.backgroundColor = "#021a0e";
+            document.getElementById('hero-title').innerText = "THE VAULT";
+            document.getElementById('hero-title').className = "text-4xl md:text-6xl font-black mb-4 text-red-600 tracking-tighter uppercase";
+            document.getElementById('secret-trigger').classList.add('hidden');
+            document.getElementById('public-trigger').classList.remove('hidden');
+            document.getElementById('category-filters').classList.add('hidden');
+            currentFilteredLinks = [...secretLinks];
+            currentPage = 1;
+            displayLinks();
+        }
+
+        function changePage(direction) { currentPage += direction; displayLinks(); window.scrollTo({ top: document.getElementById('link-grid').offsetTop - 150, behavior: 'smooth' }); }
+        function updatePaginationUI() {
+            const totalPages = Math.ceil(currentFilteredLinks.length / itemsPerPage);
+            document.getElementById('page-number').innerText = `Node ${currentPage} of ${totalPages || 1}`;
+            document.getElementById('prev-btn').disabled = (currentPage === 1);
+            document.getElementById('next-btn').disabled = (currentPage >= totalPages || totalPages === 0);
+        }
+        function filterLinks(category) { currentFilteredLinks = (category === 'All') ? [...webDenLinks] : webDenLinks.filter(l => l.category === category); currentPage = 1; displayLinks(); }
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const pool = isSecretMode ? secretLinks : webDenLinks;
+            currentFilteredLinks = pool.filter(l => l.name.toLowerCase().includes(val) || l.category.toLowerCase().includes(val));
+            currentPage = 1;
+            displayLinks();
+        });
+
+        displayLinks();
+    </script>
+</body>
+</html>
